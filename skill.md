@@ -1,16 +1,32 @@
+---
+name: pinout-lookup
+description: |
+  Look up component pinouts and generate wiring tables for PCB projects.
+  Use when the user asks how to wire boards, displays, sensors, or other
+  electronic components together. Also handles missing components (issue
+  creation or contribution) and pinout corrections.
+allowed-tools:
+  - Read
+  - Glob
+  - Grep
+  - Edit
+  - Write
+  - Bash
+---
+
 # Pinout Lookup Skill
 
 Look up component pinouts and generate wiring tables for PCB projects.
 
-The installed skill file is at `~/.claude/skills/pinout-lookup/SKILL.md`. This file is the repo's source copy -- after editing, copy changes to the installed location.
+Component pinout data lives in `~/Documents/pcb-wiring-skill/`. This skill is symlinked from `~/.claude/skills/pinout-lookup/SKILL.md` to that repo.
 
 ## Wiring Query
 
 When the user asks how to wire two components together:
 
-1. Search `boards/`, `displays/`, and any other directories in this repo for `.md` files matching the requested components (match on filename or H1 heading, case-insensitive)
+1. Search `~/Documents/pcb-wiring-skill/boards/`, `~/Documents/pcb-wiring-skill/displays/`, and any other directories in that repo for `.md` files matching the requested components (match on filename or H1 heading, case-insensitive)
 2. Read the matched files to get pinouts and bus defaults
-3. Read `WIRING_FORMAT.md` for the canonical output format
+3. Read `~/Documents/pcb-wiring-skill/WIRING_FORMAT.md` for the canonical output format
 4. If the display/peripheral file already has a "Wiring to <board>" section for the requested board, use those pin assignments
 5. Otherwise, use the board's "Bus Defaults" section (I2C, SPI, UART pin assignments) to determine correct wiring based on the peripheral's interface type
 6. Output a wiring table following `WIRING_FORMAT.md` -- peripheral on left, board on right, table only, no ASCII pinout diagrams unless the user asks
@@ -65,7 +81,7 @@ Create an issue on `plc/pcb-wiring-skill` using `gh issue create`:
 
 ### If the user wants to contribute
 
-1. Read `TEMPLATE.md` and `CONTRIBUTING.md`
+1. Read `~/Documents/pcb-wiring-skill/TEMPLATE.md` and `~/Documents/pcb-wiring-skill/CONTRIBUTING.md`
 2. Walk the user through creating the `.md` file following those guidelines
 3. When the file is ready:
    - Create a branch: `git checkout -b add-<component-name>`
