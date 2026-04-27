@@ -11,7 +11,8 @@ When the user asks how to wire two components together:
 3. Read `WIRING_FORMAT.md` for the canonical output format
 4. If the display/peripheral file already has a "Wiring to <board>" section for the requested board, use those pin assignments
 5. Otherwise, use the board's "Bus Defaults" section (I2C, SPI, UART pin assignments) to determine correct wiring based on the peripheral's interface type
-6. Output a wiring table following `WIRING_FORMAT.md` -- table only, no ASCII pinout diagrams unless the user asks
+6. Output a wiring table following `WIRING_FORMAT.md` -- peripheral on left, board on right, table only, no ASCII pinout diagrams unless the user asks
+7. Do not modify files in the pcb-wiring-skill repo. Only write to the user's project `WIRING.md`
 
 ## Project Wiring File
 
@@ -26,7 +27,7 @@ If `WIRING.md` does not exist yet, create it with this structure:
 
 | Component | Type | Interface |
 |-----------|------|-----------|
-| <name>    | board / display / sensor | I2C / SPI / UART / -- |
+| <name>    | board / display / sensor | I2C / SPI / UART (peripherals) or -- (boards) |
 
 ## <Peripheral> to <Board>
 
