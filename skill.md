@@ -69,3 +69,14 @@ Create an issue on `plc/pcb-wiring-skill` using `gh issue create`:
    - Create a branch: `git checkout -b add-<component-name>`
    - Commit the file
    - Push and open a PR with `gh pr create`
+
+## Incorrect Pinout
+
+If the user spots an error in an existing component file (wrong pin, wrong position, bad wiring):
+
+1. Ask the user what's wrong and what the correct value should be
+2. Open a PR proposing the fix on `plc/pcb-wiring-skill`:
+   - Create a branch: `git checkout -b fix-<component-name>`
+   - Make the correction
+   - Commit with a message explaining what was wrong
+   - Push and open a PR with `gh pr create`, describing the error and the source of the correction in the body
