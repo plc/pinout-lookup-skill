@@ -28,10 +28,9 @@ When the user asks how to wire two components together:
 2. Search `boards/`, `displays/`, and any other directories in the repo for `.md` files matching the requested components (match on filename or H1 heading, case-insensitive)
 3. Read the matched files to get pinouts and bus defaults
 4. Read `WIRING_FORMAT.md` in the repo root for the canonical output format
-5. If the display/peripheral file already has a "Wiring to <board>" section for the requested board, use those pin assignments
-6. Otherwise, use the board's "Bus Defaults" section (I2C, SPI, UART pin assignments) to determine correct wiring based on the peripheral's interface type
-7. Output a wiring table following `WIRING_FORMAT.md` -- peripheral on left, board on right, table only, no ASCII pinout diagrams unless the user asks
-8. Do not modify files in the pcb-wiring-skill repo. Only write to the user's project `WIRING.md`
+5. Use the board's "Bus Defaults" section (I2C, SPI, UART pin assignments) to determine correct wiring based on the peripheral's interface type
+6. Output a wiring table following `WIRING_FORMAT.md` -- peripheral on left, board on right, table only, no ASCII pinout diagrams unless the user asks
+7. Do not modify files in the pcb-wiring-skill repo. Only write to the user's project `WIRING.md`
 
 ## Project Wiring File
 
@@ -82,7 +81,7 @@ Create an issue on `plc/pcb-wiring-skill` using `gh issue create`:
 
 ### If the user wants to contribute
 
-1. Read `TEMPLATE.md` and `CONTRIBUTING.md` from the repo root
+1. Read `pinout_template.md` and `CONTRIBUTING.md` from the repo root
 2. Walk the user through creating the `.md` file following those guidelines
 3. When the file is ready:
    - Create a branch: `git checkout -b add-<component-name>`

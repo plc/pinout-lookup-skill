@@ -1,7 +1,9 @@
-# Templates
+# Pinout Template
 
-Structure for adding new files. USB port always faces NORTH in board diagrams.
-Display/peripheral pins at TOP unless otherwise noted.
+Structure for adding new pinout files.
+
+- USB port always faces NORTH in board diagrams
+- Pin headers at TOP of peripheral diagrams
 
 ## File Naming
 
@@ -49,10 +51,10 @@ Source: <manufacturer wiki URL>
 - Battery ADC, pin numbering quirks, reserved GPIOs, etc.
 ```
 
-## Display / Peripheral (`displays/`)
+## Peripheral (`displays/`, `sensors/`, etc.)
 
 ```markdown
-# <Display Name>
+# <Component Name>
 
 Source: <manufacturer product page or datasheet URL>
 
@@ -60,7 +62,7 @@ Source: <manufacturer product page or datasheet URL>
 
 ## Pinout (<orientation note>)
 
-<ASCII diagram showing pin header and display outline>
+<ASCII diagram showing pin header and component outline>
 
 ## Pin Description
 
@@ -69,10 +71,6 @@ Source: <manufacturer product page or datasheet URL>
 ## <Interface details>
 
 - Address, mode, frequency, etc.
-
-## Wiring to <Board Name>
-
-<Wiring table following WIRING_FORMAT.md for each board in boards/>
 ```
 
 ## How to Populate
@@ -80,4 +78,3 @@ Source: <manufacturer product page or datasheet URL>
 1. Get the pinout from the manufacturer page or product listing images
 2. Read the images to get exact pin order and labels
 3. Build ASCII art matching the physical layout
-4. For displays/peripherals, add a wiring section for each board in `boards/`

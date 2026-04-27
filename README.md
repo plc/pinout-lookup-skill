@@ -66,7 +66,7 @@ If you spot an error, tell Claude what's wrong and it will open a PR to fix it.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Use [TEMPLATE.md](TEMPLATE.md) for the file structure and [WIRING_FORMAT.md](WIRING_FORMAT.md) for the wiring table format.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Use [pinout_template.md](pinout_template.md) for the file structure and [WIRING_FORMAT.md](WIRING_FORMAT.md) for the wiring table format.
 
 ## File Structure
 
@@ -75,6 +75,6 @@ boards/           Board pinouts
 displays/         Display/peripheral pinouts
 skill.md          Skill definition (symlink target)
 WIRING_FORMAT.md  Canonical wiring table format
-TEMPLATE.md       Template for new component files
+pinout_template.md       Template for new component files
 CONTRIBUTING.md   Contribution guidelines
 ```
