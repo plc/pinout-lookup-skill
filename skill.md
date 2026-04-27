@@ -1,6 +1,8 @@
-# Pinout Lookup
+# Pinout Lookup Skill
 
 Look up component pinouts and generate wiring tables for PCB projects.
+
+The installed skill file is at `~/.claude/skills/pinout-lookup/SKILL.md`. This file is the repo's source copy -- after editing, copy changes to the installed location.
 
 ## Wiring Query
 
