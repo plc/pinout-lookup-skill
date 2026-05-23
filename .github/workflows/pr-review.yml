@@ -16,13 +16,37 @@ permissions:
   id-token: write
 
 jobs:
-  # Check format and structure compliance
+  # Check format and structure compliance, auto-fix simple issues
   structure:
     runs-on: ubuntu-latest
     steps:
+      - name: Detect fork
+        id: fork
+        run: |
+          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+            echo "is_fork=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_fork=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Checkout the PR branch head (not the merge ref) so we can push
+      # autofix commits. For fork PRs we use the default merge ref since
+      # we cannot push to the fork.
       - uses: actions/checkout@v4
+        if: steps.fork.outputs.is_fork == 'false'
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: actions/checkout@v4
+        if: steps.fork.outputs.is_fork == 'true'
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Check VERSION matches skill.md
         run: |
@@ -35,16 +59,28 @@ jobs:
             fi
           fi
 
+      - name: Detect autofix commit
+        id: context
+        run: |
+          HEAD_MSG=$(git log -1 --format=%s)
+          if echo "$HEAD_MSG" | grep -q '\[autofix\]'; then
+            echo "skip_fix=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip_fix=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           claude_args: >-
             --model claude-haiku-4-5
             --max-turns 15
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep,Edit,Write,Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(mv boards/*:*),Bash(mv displays/*:*),Bash(mv sensors/*:*)"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
+            SKIP_FIX: ${{ steps.context.outputs.skip_fix }}
+            IS_FORK: ${{ steps.fork.outputs.is_fork }}
 
             You are the STRUCTURE check for this PR. Only check format and structure,
             do NOT verify data accuracy (a separate job handles that).
@@ -64,9 +100,42 @@ jobs:
             For skill.md changes: YAML frontmatter present, no local paths, WIRING_FORMAT.md in sync,
             version bumped in both frontmatter and VERSION file.
 
+            ## Auto-fixing
+
+            If SKIP_FIX is "false" AND IS_FORK is "false", you may fix simple
+            structural/formatting issues directly. If either is "true", do NOT
+            attempt fixes -- just review and approve or request changes as normal.
+
+            Fixable issues (fix these yourself):
+            - Filename not lowercase/dash-separated (use `mv` to rename)
+            - File in wrong directory (use `mv` to move)
+            - Missing `Source:` line (add `Source: TODO`)
+            - Missing `Bus Defaults` section in board files (append a skeleton)
+            - Trailing whitespace or missing trailing newline
+            - Extra blank lines at end of file
+            - Wiring tables in pinout files (delete the entire "Wiring to ..." section)
+
+            NEVER fix or modify:
+            - Pin names, positions, order, or GPIO numbers
+            - ASCII diagram content
+            - I2C addresses, SPI modes, voltage levels
+            - Source URLs (only ADD `Source: TODO` if missing entirely)
+            - Any data that could affect electrical correctness
+
+            If you made fixes:
+            1. Stage changed files: `git add -A`
+            2. Check for staged changes: `git diff --cached --quiet` (exit code 1 means changes exist)
+            3. If changes exist, commit: `git commit -m "[autofix] fix structural issues"`
+            4. Push: `git push`
+            5. Then continue reviewing the final state.
+            If git diff --cached --quiet exits 0, there are no changes -- skip commit and push.
+
             Post your findings with `gh pr review`:
             - Pass: `gh pr review --approve --body "Structure check passed. <summary>"`
             - Fail: `gh pr review --request-changes --body "Structure issues found: <details>"`
+
+            If you auto-fixed some issues but others remain that you cannot fix,
+            request changes listing only the remaining issues.
 
             Do NOT merge -- a separate job handles that after all checks pass.
 
