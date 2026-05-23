@@ -57,3 +57,14 @@ Passive infrared motion detector. 5-20V input, 3.3V logic output. Adjustable sen
 Module requires 5V power for reliable operation. The output signal is 3.3V logic level regardless of input voltage, making it compatible with both 3.3V and 5V microcontrollers.
 
 Reference verified from physical module photo showing component layout and pin labels.
+
+## Wiring to Metro ESP32-S3
+
+HC-SR501: pins 1-3 left to right, lens facing you.
+Metro ESP32-S3: L1-L18 left, R1-R14 right, top to bottom, USB at top.
+
+| HC-SR501       | #  | Metro ESP32-S3 | #   |
+|----------------|----|----------------|-----|
+| OUT            | 1  | A0 (GPIO14)    | R9  |
+| GND            | 2  | GND            | R6  |
+| VCC (+Power)   | 3  | 5V             | R5  |
