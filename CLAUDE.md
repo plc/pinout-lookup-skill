@@ -17,15 +17,24 @@ curl -sL https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/skill.md
 
 The skill fetches pinout files from this repo at runtime via raw GitHub URLs. There is no local clone. Changes to component files in this repo are immediately available to all users.
 
-Changes to `skill.md` itself require users to re-run the curl command. There is no auto-update mechanism for standalone skills. Future option: package as a Claude Code plugin for marketplace distribution with proper versioning and auto-update.
+Changes to `skill.md` itself require users to re-run the curl command. The skill checks a `VERSION` file in the repo on first use and tells the user if an update is available.
 
 ## Key files
 
 - `skill.md` -- the skill definition. Has YAML frontmatter for Claude Code discovery. This is what users install.
+- `VERSION` -- single integer, incremented whenever `skill.md` changes. The skill compares this against its local `version:` frontmatter field to notify users of updates.
 - `WIRING_FORMAT.md` -- canonical wiring table format (also inlined in skill.md, keep both in sync)
 - `pinout_template.md` -- template for new component files
 - `CONTRIBUTING.md` -- contribution guidelines
 - `boards/`, `displays/` -- component pinout files
+
+## Version bumping
+
+When you change `skill.md`, you MUST:
+1. Increment the `version:` field in the skill.md YAML frontmatter
+2. Update the `VERSION` file in the repo root to match
+
+Both files must contain the same integer. This is how users get notified that an update is available. Forgetting to bump means users never see the update prompt. Changes to component files (boards/, displays/, etc.) do NOT require a version bump since those are fetched from GitHub at runtime.
 
 ## Gotchas learned the hard way
 
@@ -55,7 +64,7 @@ Claude Code discovers skills by reading `SKILL.md` files in `~/.claude/skills/`.
 
 ### Do not assume gh CLI is available
 
-The skill uses `curl` for fetching pinout data (works everywhere). `gh` is optional and used for creating issues and PRs when available. If `gh` is missing, the skill gives the user a direct GitHub link instead.
+The skill uses WebFetch for fetching pinout data (works everywhere). `gh` is optional and used for listing repo directories, creating issues, and opening PRs. If `gh` is missing, the skill gives the user a direct GitHub link instead.
 
 ### Position notation is physical, not logical
 

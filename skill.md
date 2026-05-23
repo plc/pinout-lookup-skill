@@ -1,5 +1,6 @@
 ---
 name: pinout-lookup
+version: 1
 description: |
   Look up component pinouts and generate wiring tables for PCB projects.
   Use when the user asks how to wire boards, displays, sensors, or other
@@ -18,12 +19,23 @@ allowed-tools:
 
 Look up component pinouts and generate wiring tables for PCB projects. Pinout data is stored in the GitHub repo `plc/pinout-lookup-skill`.
 
+## Version Check
+
+On first use in a session, fetch `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/VERSION` using WebFetch. Compare the number in that file to the `version:` field in this skill's frontmatter. If the remote version is higher, tell the user:
+
+> A newer version of the pinout-lookup skill is available. Update with:
+> ```
+> curl -sL https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/skill.md > ~/.claude/skills/pinout-lookup/SKILL.md
+> ```
+
+Then continue with the user's request normally.
+
 ## Fetching Pinout Data
 
-Fetch files from `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`. For example:
+Base URL: `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`
 
-- Read a file: `curl -sL https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`
-- List a directory: `gh api repos/plc/pinout-lookup-skill/contents/boards --jq '.[].name'` (if `gh` is available), or check the repo README for available components
+- Read a file: use WebFetch with the raw URL (e.g. `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`)
+- List a directory: use Bash with `gh api repos/plc/pinout-lookup-skill/contents/boards --jq '.[].name'`
 
 Component directories: `boards/`, `displays/`, `sensors/`, and any others present.
 
