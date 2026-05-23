@@ -70,8 +70,9 @@ jobs:
 
             Do NOT merge -- a separate job handles that after all checks pass.
 
-  # Verify pinout data against sources
+  # Verify pinout data against sources (runs after structure to avoid rate limits)
   data-verify:
+    needs: structure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,7 +84,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           claude_args: >-
             --model claude-haiku-4-5
-            --max-turns 15
+            --max-turns 30
             --allowedTools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep,WebFetch,WebSearch,Bash(curl:*)"
           prompt: |
             REPO: ${{ github.repository }}
