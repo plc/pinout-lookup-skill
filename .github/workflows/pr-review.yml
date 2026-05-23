@@ -113,6 +113,7 @@ jobs:
             - Missing `Bus Defaults` section in board files (append a skeleton)
             - Trailing whitespace or missing trailing newline
             - Extra blank lines at end of file
+            - Wiring tables in pinout files (delete the entire "Wiring to ..." section)
 
             NEVER fix or modify:
             - Pin names, positions, order, or GPIO numbers
