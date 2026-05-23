@@ -17,7 +17,7 @@ curl -sL https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/skill.md
 
 The skill fetches pinout files from this repo at runtime via raw GitHub URLs. There is no local clone. Changes to component files in this repo are immediately available to all users.
 
-Changes to `skill.md` itself require users to re-run the curl command. The skill checks a `VERSION` file in the repo on first use and tells the user if an update is available.
+Changes to `skill.md` itself require users to re-run the curl command. The skill checks the `VERSION` file on first use each session and prompts the user to update if a newer version is available.
 
 ## Key files
 
@@ -26,7 +26,7 @@ Changes to `skill.md` itself require users to re-run the curl command. The skill
 - `WIRING_FORMAT.md` -- canonical wiring table format (also inlined in skill.md, keep both in sync)
 - `pinout_template.md` -- template for new component files
 - `CONTRIBUTING.md` -- contribution guidelines
-- `boards/`, `displays/` -- component pinout files
+- `boards/`, `displays/`, `sensors/` -- component pinout files
 
 ## Version bumping
 
@@ -64,7 +64,7 @@ Claude Code discovers skills by reading `SKILL.md` files in `~/.claude/skills/`.
 
 ### Do not assume gh CLI is available
 
-The skill uses WebFetch for fetching pinout data (works everywhere). `gh` is optional and used for listing repo directories, creating issues, and opening PRs. If `gh` is missing, the skill gives the user a direct GitHub link instead.
+The skill uses WebFetch for fetching pinout data and listing directories (works everywhere). `gh` is optional and used for creating issues and opening PRs. If `gh` is missing, the skill gives the user a direct GitHub link instead.
 
 ### Position notation is physical, not logical
 

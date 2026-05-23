@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+# Global group: only one PR review at a time to stay within API rate limits.
+# cancel-in-progress is false (default) so queued PRs wait rather than cancel.
 concurrency:
   group: pr-review
 
@@ -20,6 +22,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Check VERSION matches skill.md
+        run: |
+          if git diff origin/main --name-only | grep -q 'skill.md\|VERSION'; then
+            SKILL_VERSION=$(grep '^version:' skill.md | awk '{print $2}')
+            FILE_VERSION=$(cat VERSION | tr -d '[:space:]')
+            if [ "$SKILL_VERSION" != "$FILE_VERSION" ]; then
+              echo "::error::VERSION file ($FILE_VERSION) does not match skill.md version: ($SKILL_VERSION)"
+              exit 1
+            fi
+          fi
 
       - uses: anthropics/claude-code-action@v1
         with:
@@ -104,6 +117,8 @@ jobs:
       - name: Check review state
         id: reviews
         run: |
+          # Wait for GitHub API to register reviews from prior jobs
+          sleep 5
           CHANGES_REQUESTED=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews \
             --jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length')
           if [ "$CHANGES_REQUESTED" -gt 0 ]; then
@@ -118,6 +133,6 @@ jobs:
 
       - name: Merge PR
         if: steps.reviews.outputs.blocked == 'false'
-        run: gh pr merge ${{ github.event.pull_request.number }} --squash --auto
+        run: gh pr merge ${{ github.event.pull_request.number }} --squash
         env:
           GH_TOKEN: ${{ github.token }}
