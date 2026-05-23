@@ -70,8 +70,9 @@ jobs:
 
             Do NOT merge -- a separate job handles that after all checks pass.
 
-  # Verify pinout data against sources
+  # Verify pinout data against sources (runs after structure to avoid rate limits)
   data-verify:
+    needs: structure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
