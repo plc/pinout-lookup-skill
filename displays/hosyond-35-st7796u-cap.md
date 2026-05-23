@@ -86,6 +86,28 @@ Pin 14 (SD_CS) provides chip select for the optional onboard micro SD card slot.
 
 If you don't use the SD card, you can leave pin 14 disconnected or tie it high.
 
+## Wiring to Metro ESP32-S3
+
+Hosyond ST7796U: pins 1-14 left to right, display facing you.
+Metro ESP32-S3: L1-L18 left, R1-R14 right, top to bottom, USB at top.
+
+| Hosyond ST7796U | #  | Metro ESP32-S3 | #   |
+|-----------------|----|----------------|-----|
+| VCC             | 1  | 3.3V           | R4  |
+| GND             | 2  | GND            | R6  |
+| LCD_CS          | 3  | D10 (GPIO10)   | L11 |
+| LCD_RST         | 4  | D8 (GPIO8)     | L9  |
+| LCD_RS (DC)     | 5  | D9 (GPIO9)     | L10 |
+| SDI (MOSI)      | 6  | D11 (GPIO11)   | L12 |
+| SCK             | 7  | D13 (GPIO13)   | L14 |
+| LED             | 8  | 3.3V           | R4  |
+| SDO (MISO)      | 9  | D12 (GPIO12)   | L13 |
+| CTP_SCL         | 10 | SCL (GPIO48)   | L18 |
+| CTP_RST         | 11 | D6 (GPIO6)     | L7  |
+| CTP_SDA         | 12 | SDA (GPIO47)   | L17 |
+| CTP_INT         | 13 | D7 (GPIO7)     | L8  |
+| SD_CS           | 14 | (unassigned)   | --  |
+
 ## Notes
 
 - This module includes an onboard level-shifting circuit and can be used with both 3.3V and 5V MCUs (VCC can be 3.3V or 5V).
