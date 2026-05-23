@@ -192,8 +192,16 @@ jobs:
         run: |
           # Wait for GitHub API to register reviews from prior jobs
           sleep 5
+          # Only consider each reviewer's most recent non-dismissed review.
+          # A reviewer who requests changes then later approves should not block.
           CHANGES_REQUESTED=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews \
-            --jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length')
+            --jq '
+              [ .[] | select(.state != "DISMISSED" and .state != "COMMENTED") ]
+              | group_by(.user.login)
+              | [ .[] | sort_by(.submitted_at) | last ]
+              | [ .[] | select(.state == "CHANGES_REQUESTED") ]
+              | length
+            ')
           if [ "$CHANGES_REQUESTED" -gt 0 ]; then
             echo "blocked=true" >> "$GITHUB_OUTPUT"
             echo "Reviews requested changes -- skipping merge"
