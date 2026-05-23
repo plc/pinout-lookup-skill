@@ -6,12 +6,12 @@ description: |
   electronic components together. Also handles missing components (issue
   creation or contribution) and pinout corrections.
 allowed-tools:
+  - Bash
   - Read
-  - Glob
-  - Grep
   - Edit
   - Write
-  - Bash
+  - WebFetch
+  - WebSearch
 ---
 
 # Pinout Lookup Skill
