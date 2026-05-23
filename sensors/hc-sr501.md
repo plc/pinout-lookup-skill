@@ -4,16 +4,16 @@ Source: TODO
 
 Passive infrared motion detector. 5-20V input, 3.3V logic output. Adjustable sensitivity and trigger duration.
 
-## Pinout (lens dome away, pins facing you)
+## Pinout (lens facing you, pins at bottom)
 
 ```
                 +------------------+
-                |                  |
-                |   [Lens Dome]    |
-                |                  |
                 |      ######      |
                 |     ########     |
                 |    ##########    |
+                |   [Lens Dome]    |
+                |                  |
+                +------------------+
                 |                  |
                 |  [IC]  [IC]      |
                 |                  |
@@ -21,19 +21,18 @@ Passive infrared motion detector. 5-20V input, 3.3V logic output. Adjustable sen
                 |    Pot    Pot    |
                 |                  |
                 |     [Jumper]     |
-                |    H / L         |
+                |      H / L      |
                 |                  |
-                +------------------+
                 |  o    o    o     |
-                | GND  OUT  VCC    |
+                | OUT  GND  VCC   |
                 +------------------+
                   1    2    3
 ```
 
 ## Pin Description
 
-- Pin 1 (GND) -- Ground
-- Pin 2 (OUT) -- Digital output. HIGH when motion detected, 3.3V logic level
+- Pin 1 (OUT) -- Digital output. HIGH when motion detected, 3.3V logic level
+- Pin 2 (GND) -- Ground
 - Pin 3 (VCC) -- Power input, 5-20V DC (typically 5V)
 
 ## Configuration
