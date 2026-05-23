@@ -79,11 +79,11 @@ If `WIRING.md` already exists, append the new wiring section and update the comp
 When a requested component has no `.md` file in the repo:
 
 1. Tell the user the component is not on file yet
-2. Ask: "Want me to open a GitHub issue requesting it, or would you like to contribute it yourself?"
+2. Ask: "I can request this component be added (open an issue), or if you have a datasheet/pinout diagram I can contribute it now (open a PR). Which would you prefer?"
 
-### If the user wants an issue
+### Requesting a component (issue)
 
-Create an issue on `plc/pinout-lookup-skill`. Use `gh issue create -R plc/pinout-lookup-skill` if available, otherwise give the user a link to `https://github.com/plc/pinout-lookup-skill/issues/new` with the details below:
+Open an issue to request pinout data for a specific device. This is the right path when no verified pinout source is available -- a request issue is always better than a PR with guessed pin positions. Use `gh issue create -R plc/pinout-lookup-skill` if available, otherwise give the user a link to `https://github.com/plc/pinout-lookup-skill/issues/new`.
 
 - **Title:** `Add <component type>: <component name>`
 - **Labels:** `new-board`, `new-display`, or `new-sensor` (pick the appropriate one; create the label if it does not exist)
@@ -97,17 +97,24 @@ Create an issue on `plc/pinout-lookup-skill`. Use `gh issue create -R plc/pinout
 
   ## Manufacturer URL
   <url if known, otherwise "Unknown">
+
+  ## Important
+  Pin layouts must come from a datasheet, manufacturer pinout diagram, or a clear photo of the physical board/module. Do not guess or infer pin positions -- incorrect pinouts cause hardware damage.
   ```
 
-### If the user wants to contribute
+### Contributing a component (PR)
+
+Open a PR to add a new pinout file. Only do this when a verified source is available.
 
 1. Fetch `pinout_template.md` and `CONTRIBUTING.md` from the repo
-2. Walk the user through creating the `.md` file following those guidelines
-3. When the file is ready, open a PR. Use `gh` if available, otherwise guide the user to fork and submit manually
+2. Build the `.md` file following those guidelines, sourcing every pin label and position from the primary source
+3. **Do not guess or generate pin positions from training data.** Every pin label and position must come from a datasheet, manufacturer diagram, or a photo of the physical board/module that the user provides or you fetch from a URL. If no source is available, stop and open an issue instead.
+4. Open a PR with the new file. Include the source URL in the PR body. Use `gh` if available, otherwise guide the user to fork and submit manually
 
 ## Incorrect Pinout
 
 If the user spots an error in an existing component file (wrong pin, wrong position, bad wiring):
 
 1. Ask the user what's wrong and what the correct value should be
-2. Open a PR proposing the fix, describing the error and the source of the correction in the PR body. Use `gh` if available, otherwise guide the user to fork and submit manually
+2. **If the correction can be verified** (user provides source, datasheet, or photo): open a PR proposing the fix. Include the error, the correction, and the source in the PR body. Use `gh` if available, otherwise guide the user to fork and submit manually.
+3. **If the correction cannot be verified**: open an issue describing the reported error so someone with the physical board can confirm and fix it.

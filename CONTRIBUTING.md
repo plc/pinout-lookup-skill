@@ -7,12 +7,14 @@ Submit a pull request to add a new board or peripheral.
 1. Follow the structure in `pinout_template.md`
 2. One `.md` file per component in the correct directory (`boards/`, `displays/`, `sensors/`, etc.) -- create a new directory if none fits
 3. Include a source link at the top of the file (manufacturer pinout diagram, datasheet, or product page URL). Use `Source: TODO` if you can't find one
-4. ASCII diagrams must match the physical layout shown in the source
-5. Do not commit images to the repo
+4. **Pin layouts must come from a datasheet, manufacturer diagram, or a photo of the physical board/module.** Do not guess, infer, or rely on AI-generated pinouts. Incorrect pin positions can cause hardware damage. If you cannot verify the layout from a primary source, note what is unverified.
+5. ASCII diagrams must match the physical layout shown in the source
+6. Do not commit images to the repo
 
 ## Checklist
 
 - [ ] Source link included (e.g. `Source: https://...` or `Source: TODO`)
+- [ ] Pin positions verified against datasheet, manufacturer diagram, or board photo (not guessed)
 - [ ] Follows `pinout_template.md` structure
 - [ ] ASCII pinout matches source
 - [ ] USB north for boards, pin header at top of diagram for peripherals
