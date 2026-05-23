@@ -1,6 +1,6 @@
 ---
 name: pinout-lookup
-version: 1
+version: 2
 description: |
   Look up component pinouts and generate wiring tables for PCB projects.
   Use when the user asks how to wire boards, displays, sensors, or other
@@ -35,7 +35,7 @@ Then continue with the user's request normally.
 Base URL: `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`
 
 - Read a file: use WebFetch with the raw URL (e.g. `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`)
-- List a directory: use Bash with `gh api repos/plc/pinout-lookup-skill/contents/boards --jq '.[].name'`
+- List a directory: use WebFetch on `https://api.github.com/repos/plc/pinout-lookup-skill/contents/boards` and extract the `name` field from each entry
 
 Component directories: `boards/`, `displays/`, `sensors/`, and any others present.
 
