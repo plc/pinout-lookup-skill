@@ -20,10 +20,10 @@ Look up component pinouts and generate wiring tables for PCB projects. Pinout da
 
 ## Fetching Pinout Data
 
-Fetch files from `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`. For example:
+Base URL: `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`
 
-- Read a file: `curl -sL https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`
-- List a directory: `gh api repos/plc/pinout-lookup-skill/contents/boards --jq '.[].name'` (if `gh` is available), or check the repo README for available components
+- Read a file: use WebFetch with the raw URL (e.g. `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`)
+- List a directory: use Bash with `gh api repos/plc/pinout-lookup-skill/contents/boards --jq '.[].name'`
 
 Component directories: `boards/`, `displays/`, `sensors/`, and any others present.
 
