@@ -4,14 +4,16 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+concurrency:
+  group: pr-review
+
 permissions:
   contents: write
   pull-requests: write
   issues: write
-  id-token: write
 
 jobs:
-  # Required check: structure and format compliance
+  # Check format and structure compliance
   structure:
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +27,7 @@ jobs:
           claude_args: >-
             --model claude-haiku-4-5
             --max-turns 15
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr merge:*),Bash(gh pr review:*),Read,Glob,Grep"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -45,15 +47,16 @@ jobs:
             - No images committed
             - Board files have Bus Defaults section
 
-            For skill.md changes: YAML frontmatter present, no local paths, WIRING_FORMAT.md in sync.
+            For skill.md changes: YAML frontmatter present, no local paths, WIRING_FORMAT.md in sync,
+            version bumped in both frontmatter and VERSION file.
 
             Post your findings with `gh pr review`:
             - Pass: `gh pr review --approve --body "Structure check passed. <summary>"`
             - Fail: `gh pr review --request-changes --body "Structure issues found: <details>"`
 
-            After approving, merge with: `gh pr merge --squash --auto`
+            Do NOT merge -- a separate job handles that after all checks pass.
 
-  # Best-effort check: verify pinout data against sources
+  # Verify pinout data against sources
   data-verify:
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +70,7 @@ jobs:
           claude_args: >-
             --model claude-haiku-4-5
             --max-turns 15
-            --allowedTools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Glob,Grep,WebFetch,WebSearch,Bash(curl:*)"
+            --allowedTools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep,WebFetch,WebSearch,Bash(curl:*)"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -84,10 +87,22 @@ jobs:
                SPI modes, voltage levels, bus default assignments.
             3. Note any discrepancies.
 
-            Post a single comment with `gh pr comment --body "..."` containing:
-            - Which sources you checked (with URLs)
-            - Any discrepancies found (these can damage hardware if wrong)
-            - A verdict: "Data looks correct" or "Data issues found: ..."
+            Post your findings with `gh pr review`:
+            - Pass: `gh pr review --approve --body "Data verification passed. <sources checked and summary>"`
+            - Fail: `gh pr review --request-changes --body "Data issues found: <discrepancies with sources>"`
 
-            Do NOT approve or merge -- the structure check handles that.
-            If you can't verify (no source available), say so.
+            If you cannot verify (no source available, Source: TODO with nothing findable),
+            approve with a note: `gh pr review --approve --body "Data unverifiable -- no source found. Manual check recommended."`
+
+            Do NOT merge -- a separate job handles that after all checks pass.
+
+  # Only merge after both checks pass
+  merge:
+    needs: [structure, data-verify]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: gh pr merge ${{ github.event.pull_request.number }} --squash --auto
+        env:
+          GH_TOKEN: ${{ github.token }}
