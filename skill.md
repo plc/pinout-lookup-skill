@@ -1,6 +1,6 @@
 ---
 name: pinout-lookup
-version: 2
+version: 3
 description: |
   Look up component pinouts and generate wiring tables for PCB projects.
   Use when the user asks how to wire boards, displays, sensors, or other
@@ -34,17 +34,15 @@ Then continue with the user's request normally.
 
 Base URL: `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/`
 
-- Read a file: use WebFetch with the raw URL (e.g. `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`)
-- List a directory: use WebFetch on `https://api.github.com/repos/plc/pinout-lookup-skill/contents/boards` and extract the `name` field from each entry
-
-Component directories: `boards/`, `displays/`, `sensors/`, and any others present.
+- **Search for components**: Fetch `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/components.json` using WebFetch. Search the `keywords`, `name`, and `description` fields to find matching components. This single fetch replaces all directory listing calls.
+- **Read a component file**: Use WebFetch with the raw URL constructed from the `file` field in the manifest (e.g. `https://raw.githubusercontent.com/plc/pinout-lookup-skill/main/boards/xiao-esp32s3.md`)
 
 ## Wiring Query
 
 When the user asks how to wire two components together:
 
-1. List the component directories in the repo and find `.md` files matching the requested components (match on filename, case-insensitive)
-2. Fetch and read the matched files to get pinouts and bus defaults
+1. Fetch and search `components.json` to find components matching the user's request (search `keywords`, `name`, and `description` fields, case-insensitive)
+2. Fetch and read the matched component files using the `file` field from the manifest to get pinouts and bus defaults
 3. Use the board's "Bus Defaults" section (I2C, SPI, UART pin assignments) to determine correct wiring based on the peripheral's interface type
 4. Output a wiring table using the format below -- peripheral on left, board on right, table only, no ASCII pinout diagrams unless the user asks
 5. Do not modify files in the `plc/pinout-lookup-skill` repo
@@ -88,7 +86,7 @@ If `WIRING.md` already exists, append the new wiring section and update the comp
 
 ## Component Not Found
 
-When a requested component has no `.md` file in the repo:
+When a requested component is not in `components.json`:
 
 1. Tell the user the component is not on file yet
 2. Ask: "I can request this component be added (open an issue), or if you have a datasheet/pinout diagram I can contribute it now (open a PR). Which would you prefer?"

@@ -1,0 +1,169 @@
+{
+  "components": [
+    {
+      "description": "",
+      "file": "boards/metro-esp32s3.md",
+      "interfaces": [
+        "I2C",
+        "SPI",
+        "UART"
+      ],
+      "keywords": [
+        "adafruit",
+        "esp32",
+        "esp32s3",
+        "metro",
+        "s3"
+      ],
+      "name": "Adafruit Metro ESP32-S3",
+      "type": "board"
+    },
+    {
+      "description": "",
+      "file": "boards/xiao-esp32s3.md",
+      "interfaces": [
+        "I2C",
+        "SPI",
+        "UART"
+      ],
+      "keywords": [
+        "esp32",
+        "esp32s3",
+        "s3",
+        "xiao"
+      ],
+      "name": "XIAO ESP32-S3",
+      "type": "board"
+    },
+    {
+      "description": "",
+      "file": "boards/xiao-nrf52840.md",
+      "interfaces": [
+        "I2C",
+        "SPI",
+        "UART"
+      ],
+      "keywords": [
+        "nrf52840",
+        "xiao"
+      ],
+      "name": "XIAO nRF52840",
+      "type": "board"
+    },
+    {
+      "description": "320x480 pixels, IPS display, SPI interface (ST7796U driver) + I2C capacitive touch (FT6336U controller). 3.3V operation. Includes onboard SD card slot.",
+      "file": "displays/hosyond-35-st7796u-cap.md",
+      "interfaces": [
+        "I2C",
+        "SPI"
+      ],
+      "keywords": [
+        "320x480",
+        "35",
+        "cap",
+        "capacitive",
+        "card",
+        "controller",
+        "display",
+        "driver",
+        "ft6336u",
+        "hosyond",
+        "i2c",
+        "interface",
+        "ips",
+        "pixels",
+        "slot",
+        "spi",
+        "st7796u",
+        "touch"
+      ],
+      "name": "Hosyond 3.5\" IPS Capacitive Touch Display (ST7796U)",
+      "type": "display"
+    },
+    {
+      "description": "128x64 pixels, I2C interface, SSD1306 driver. 3.3V-5V compatible.",
+      "file": "displays/ssd1306-096-i2c.md",
+      "interfaces": [
+        "I2C"
+      ],
+      "keywords": [
+        "096",
+        "128x64",
+        "compatible",
+        "driver",
+        "i2c",
+        "interface",
+        "oled",
+        "pixels",
+        "ssd1306"
+      ],
+      "name": "SSD1306 0.96\" OLED I2C",
+      "type": "display"
+    },
+    {
+      "description": "1.28\" 240x240 round TFT with capacitive touch. GC9A01 display driver, CHSC6X touch controller, PCF8563 RTC. SPI display + I2C touch/RTC. 3.7V LiPo charging via JST 1.25. MicroSD slot. Plugs directly onto XIAO header (socket connector, no separate pin header).",
+      "file": "displays/xiao-round-display.md",
+      "interfaces": [
+        "GPIO",
+        "I2C",
+        "SPI"
+      ],
+      "keywords": [
+        "240x240",
+        "capacitive",
+        "charging",
+        "chsc6x",
+        "connector",
+        "controller",
+        "display",
+        "driver",
+        "gc9a01",
+        "header",
+        "i2c",
+        "jst",
+        "lipo",
+        "microsd",
+        "pcf8563",
+        "pin",
+        "plugs",
+        "round",
+        "rtc",
+        "seeed",
+        "slot",
+        "socket",
+        "spi",
+        "studio",
+        "tft",
+        "touch",
+        "xiao"
+      ],
+      "name": "Seeed Studio Round Display for XIAO",
+      "type": "display"
+    },
+    {
+      "description": "Passive infrared motion detector. 5-20V input, 3.3V logic output. Adjustable sensitivity and trigger duration.",
+      "file": "sensors/hc-sr501.md",
+      "interfaces": [],
+      "keywords": [
+        "20v",
+        "adjustable",
+        "detector",
+        "duration",
+        "hc",
+        "infrared",
+        "input",
+        "logic",
+        "motion",
+        "output",
+        "passive",
+        "pir",
+        "sensitivity",
+        "sensor",
+        "sr501",
+        "trigger"
+      ],
+      "name": "HC-SR501 PIR Motion Sensor",
+      "type": "sensor"
+    }
+  ]
+}
