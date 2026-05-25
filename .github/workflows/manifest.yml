@@ -1,12 +1,14 @@
 name: Update Component Manifest
 
+# Manual trigger only. The PR review workflow handles manifest updates
+# automatically during the PR process. Use this as a fallback to regenerate
+# components.json if it ever gets out of sync.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update-manifest:
@@ -24,11 +26,19 @@ jobs:
       - name: Generate manifest
         run: python scripts/generate-manifest.py
 
-      - name: Commit and push if changed
+      - name: Create PR if changed
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add components.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Update components.json [skip ci]"
-          git push
+          git diff --cached --quiet && echo "Manifest already up to date" && exit 0
+          BRANCH="update-manifest-$(date +%s)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git commit -m "Update components.json"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "Update components.json" \
+            --body "Auto-generated manifest update via manual workflow dispatch." \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ github.token }}
