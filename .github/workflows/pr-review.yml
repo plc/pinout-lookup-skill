@@ -76,7 +76,7 @@ jobs:
           claude_args: >-
             --model claude-haiku-4-5
             --max-turns 15
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep,Edit,Write,Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(mv boards/*:*),Bash(mv displays/*:*),Bash(mv sensors/*:*)"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Read,Glob,Grep,Edit,Write,Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(mv boards/*:*),Bash(mv displays/*:*),Bash(mv sensors/*:*),Bash(mv motors/*:*),Bash(mv audio/*:*)"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -89,7 +89,7 @@ jobs:
             Run `gh pr diff` to see the changes. Read pinout_template.md and CONTRIBUTING.md.
 
             Check every changed file against:
-            - Correct directory (boards/, displays/, sensors/)
+            - Correct directory (boards/, displays/, sensors/, motors/, audio/, or other appropriate category)
             - Lowercase dash-separated filename
             - Follows pinout_template.md structure
             - Has Source: URL or Source: TODO
@@ -139,6 +139,22 @@ jobs:
             request changes listing only the remaining issues.
 
             Do NOT merge -- a separate job handles that after all checks pass.
+
+      # Regenerate component manifest after any structural fixes
+      - name: Set up Python
+        if: steps.fork.outputs.is_fork == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Update component manifest
+        if: steps.fork.outputs.is_fork == 'false'
+        run: |
+          python scripts/generate-manifest.py
+          git add components.json
+          git diff --cached --quiet && exit 0
+          git commit -m "[autofix] update components.json"
+          git push
 
   # Verify pinout data against sources (runs after structure to avoid rate limits)
   data-verify:
