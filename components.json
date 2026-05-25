@@ -1,6 +1,24 @@
 {
   "components": [
     {
+      "description": "I2S Class-D mono amplifier breakout. 3.2W into 4 ohm, 1.8W into 8 ohm. 2.5V-5.5V input.",
+      "file": "audio/max98357a.md",
+      "interfaces": [],
+      "keywords": [
+        "adafruit",
+        "amplifier",
+        "breakout",
+        "class",
+        "i2s",
+        "input",
+        "max98357a",
+        "mono",
+        "ohm"
+      ],
+      "name": "Adafruit MAX98357A I2S Mono Amplifier",
+      "type": "audio"
+    },
+    {
       "description": "",
       "file": "boards/metro-esp32s3.md",
       "interfaces": [
@@ -139,6 +157,35 @@
       ],
       "name": "Seeed Studio Round Display for XIAO",
       "type": "display"
+    },
+    {
+      "description": "ULN2003AN 7-channel Darlington driver array for unipolar stepper motors. Commonly paired with 28BYJ-48 5V stepper motor. 5-12V motor power input, 5V logic input.",
+      "file": "motors/uln2003-28byj48.md",
+      "interfaces": [],
+      "keywords": [
+        "12v",
+        "28byj",
+        "28byj48",
+        "48",
+        "array",
+        "board",
+        "channel",
+        "commonly",
+        "darlington",
+        "driver",
+        "input",
+        "logic",
+        "motor",
+        "motors",
+        "paired",
+        "power",
+        "stepper",
+        "uln2003",
+        "uln2003an",
+        "unipolar"
+      ],
+      "name": "ULN2003 Stepper Driver Board + 28BYJ-48 Motor",
+      "type": "motor"
     },
     {
       "description": "Passive infrared motion detector. 5-20V input, 3.3V logic output. Adjustable sensitivity and trigger duration.",
